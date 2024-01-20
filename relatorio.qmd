@@ -1,66 +1,130 @@
 ---
-title: "Trabalho remoto"
+title: "Percepção sobre o Trabalho Remoto"
 format: dashboard
 ---
 
-# Page 1
-
-
-## Sidebar {.sidebar}
-
-```{r}
-print('This is in the side')
-```
-
-## Main body
-
-### Row 1 {height="70%"}
 
 
 ```{r}
-#| width: 70%
-print('Column 1/2')
+
+require(ggplot2)
+require(dplyr)
+
+# Coleta dos dados tratado em dados/tratamento.R
+load('data.RData')
 ```
 
 
-```{r}
-#| height: 50%
-print('Column 2/2')
-```
 
-### Row 2
+# Perfil
 
-#### Column 1
+## Row 1 {height="25%"}
 
-```{r}
-#| content: valuebox
-#| title: "Some cool number"
-list(
-  icon = "newspaper",
-  color = "danger",
-  value = 5
-)
-```
+::: {.card width="60%"}
 
-```{python}
-#| content: valuebox
-#| title: "Yet another cool number"
-dict(
-  icon = "chat",
-  color = "primary",
-  value = 42
-)
-```
+Para esta pesquisa foi ralizada uma coleta primária com respondentes online. A coleta perguntava a adultos em todo o Brasil sobre suas experiências com o trabalho remoto, principalmente nos últimos anos dado o aumento desta forma de trabalho por advento da Pandemia de Covid-19.
 
-
-#### Column 2
-
-::: {.card}
-
-<--- That value box was created with R
-
+Do total de `r total_respostas` respondentes, `r total_trabalho_remoto` já tiveram experiência com trabalho remoto e então passaram por esta pergunta filtro e responderam todo o questionário.
 :::
 
+
+```{r}
+#| content: valuebox
+#| title: "Total de respostas"
+list(
+  #icon = "newspaper",
+  color = "secondary",
+  value = total_respostas
+)
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Com experiência em trabalho remoto"
+list(
+  #icon = "newspaper",
+  color = "info",
+  value = total_trabalho_remoto
+)
+```
+
+
+
+
+## Row 2
+
+### Column 1
+
+```{r}
+
+# grafico de baras com numeros de sexo
+dados_pag_1 %>% 
+  group_by(sexo) %>% 
+  count() %>% 
+  ungroup() %>% 
+  mutate(var = rep(c('cat_sexo'),2)) %>%  
+  
+ggplot(aes(x=var, y = n, fill = sexo)) +
+  geom_bar(stat = "identity")+
+  coord_flip() +
+  theme_void() + 
+  theme(
+    legend.position = 'none',
+  ) + labs(
+    title = "    Mulheres são 57% dos respondentes"
+  )
+```
+
+
+```{r}
+
+# grafico de baras com numeros de faixa etaria
+dados_pag_1 %>% 
+  group_by(faixa_etaria) %>% 
+  count() %>% 
+  #ungroup() %>% 
+  #mutate(var = rep(c('cat_fxetaria'),5)) %>% 
+  
+ggplot(aes(x=faixa_etaria, y = n)) +
+  geom_col() +
+  theme_minimal() + 
+  theme(
+    legend.position = 'none',
+    axis.title.x = element_blank()
+  ) + labs(
+    title = "    Temos 3 a cada 4 respondentes entre 30 e 49 anos (73%)",
+    y = "frequência de respondentes"
+  )
+```
+
+
+### Column 2
+
+```{r}
+
+# grafico de baras com numeros de setor de trablho
+dados_pag_1  %>% 
+  group_by(setor_trabalho) %>% 
+  count() %>% 
+  ungroup() %>% 
+  
+  
+ggplot(aes(x=setor_trabalho, y = n)) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() + 
+  theme(
+    legend.position = 'none',
+    axis.title.y = element_blank()
+  ) + labs(
+    title = "    57% dos respondentes são servidores públicos, 30% de privados",
+    y = "frequência de respondentes"
+  )
+```
+
+
+# Preferência
 
 ::: {.card}
 
@@ -68,4 +132,16 @@ dict(
 
 :::
 
-# Page 2
+# Em construção
+
+```{r}
+#| content: valuebox
+#| title: "Página em construção!"
+list(
+  icon = "tools",
+  color = "secondary"
+)
+```
+
+
+
